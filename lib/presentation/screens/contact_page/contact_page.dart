@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/cubit/contact_list_cubit.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/widget/add_contact_dialog.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/widget/contact_list_view.dart';
-import 'package:phone_book_app/presentation/screens/contact_page/widget/contact_sliver_app_bar.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});

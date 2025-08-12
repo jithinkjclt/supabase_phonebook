@@ -59,7 +59,7 @@ class LoginPage extends StatelessWidget {
                           trailingIconColor: Colors.deepPurple,
                         ),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 25),
                         SizedBox(
                           width: double.infinity,
                           height: 50,

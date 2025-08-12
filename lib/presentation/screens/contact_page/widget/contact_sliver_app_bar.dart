@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/cubit/contact_list_cubit.dart';
 import 'package:phone_book_app/presentation/widget/appbar.dart';
-
-import '../../../../core/themes/theme_cubit.dart';
+import 'package:phone_book_app/core/themes/theme_cubit.dart';
 
 class ContactSliverAppBar extends StatelessWidget {
   const ContactSliverAppBar({super.key});
@@ -91,6 +90,8 @@ class ContactSliverAppBar extends StatelessWidget {
           expandedHeight: screenHeight * 0.18,
           floating: true,
           pinned: true,
+          automaticallyImplyLeading: false,
+          // This line removes the back button
           flexibleSpace: ClipRRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),

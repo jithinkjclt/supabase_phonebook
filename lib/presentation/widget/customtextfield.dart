@@ -100,7 +100,7 @@ class CustomTextField extends StatelessWidget {
             onChanged: onChanged,
             obscureText: obscureText,
             // <-- Added here
-            style: TextStyle(height: height, fontSize: 14),
+            style: TextStyle(height: height, fontSize: 14, color: Colors.black),
             decoration: InputDecoration(
               isDense: true,
               hintText: hintText,
