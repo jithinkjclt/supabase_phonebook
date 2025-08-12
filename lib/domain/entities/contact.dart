@@ -23,11 +23,7 @@ class Contact {
     );
   }
 
-  Contact copyWith({
-    String? name,
-    String? phone,
-    bool? isFavorite,
-  }) {
+  Contact copyWith({String? name, String? phone, bool? isFavorite}) {
     return Contact(
       id: id,
       name: name ?? this.name,
