@@ -4,20 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/cubit/contact_list_cubit.dart';
 import 'package:phone_book_app/presentation/widget/appbar.dart';
 
+import '../../../../core/themes/theme_cubit.dart';
+
 class ContactSliverAppBar extends StatelessWidget {
   const ContactSliverAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ContactListCubit>();
+    final themeCubit = context.read<ThemeCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return BlocBuilder<ContactListCubit, ContactListState>(
       builder: (context, state) {
-        final showFavoritesOnly = (state is ContactListSuccess) ? state.showFavoritesOnly : false;
-        final showRecentlyAddedOnly = (state is ContactListSuccess) ? state.showRecentlyAddedOnly : false;
+        final showFavoritesOnly = (state is ContactListSuccess)
+            ? state.showFavoritesOnly
+            : false;
+        final showRecentlyAddedOnly = (state is ContactListSuccess)
+            ? state.showRecentlyAddedOnly
+            : false;
         final isAllContacts = !showFavoritesOnly && !showRecentlyAddedOnly;
 
         final toggleButtons = SingleChildScrollView(
@@ -35,7 +42,9 @@ class ContactSliverAppBar extends StatelessWidget {
                   'All Contacts',
                   style: TextStyle(
                     color: isAllContacts ? Colors.blue : Colors.grey,
-                    fontWeight: isAllContacts ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isAllContacts
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
                 ),
               ),
@@ -50,7 +59,9 @@ class ContactSliverAppBar extends StatelessWidget {
                   'Favorites',
                   style: TextStyle(
                     color: showFavoritesOnly ? Colors.blue : Colors.grey,
-                    fontWeight: showFavoritesOnly ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: showFavoritesOnly
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
                 ),
               ),
@@ -62,10 +73,12 @@ class ContactSliverAppBar extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  'Recently Added',
+                  'Recently',
                   style: TextStyle(
                     color: showRecentlyAddedOnly ? Colors.blue : Colors.grey,
-                    fontWeight: showRecentlyAddedOnly ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: showRecentlyAddedOnly
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
                 ),
               ),
@@ -92,10 +105,20 @@ class ContactSliverAppBar extends StatelessWidget {
                       ? Colors.black.withOpacity(0.95)
                       : Colors.white.withOpacity(0.95),
                   textColor: isDark ? Colors.white : Colors.black87,
-                  iconColor: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                  hintColor: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                  iconColor: isDark
+                      ? Colors.grey.shade400
+                      : Colors.grey.shade600,
+                  hintColor: isDark
+                      ? Colors.grey.shade600
+                      : Colors.grey.shade400,
                   bottomContent: toggleButtons,
-                  trailing: null,
+                  trailing: IconButton(
+                    icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                    color: isDark ? Colors.white : Colors.black,
+                    onPressed: () {
+                      themeCubit.toggleTheme();
+                    },
+                  ),
                 ),
               ),
             ),

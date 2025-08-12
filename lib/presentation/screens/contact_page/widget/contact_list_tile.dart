@@ -38,6 +38,7 @@ class ContactTile extends StatelessWidget {
           horizontal: screenWidth * 0.04,
           vertical: screenHeight * 0.015,
         ),
+        // This is the code that displays the initials
         leading: Container(
           width: screenWidth * 0.12,
           height: screenWidth * 0.12,

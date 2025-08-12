@@ -18,6 +18,8 @@ void showAddContactDialog(BuildContext context, {Contact? contact}) {
         backgroundColor: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
+          // Add this line to specify a border
+          side: const BorderSide(color: Colors.grey, width: 1.0),
         ),
         title: Text(
           isEditing ? 'Edit Contact' : 'Add New Contact',

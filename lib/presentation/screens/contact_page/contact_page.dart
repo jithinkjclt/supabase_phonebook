@@ -15,7 +15,7 @@ class ContactPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ContactListCubit(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         body: const ContactListView(),
         floatingActionButton: Builder(
           builder: (context) {
