@@ -14,12 +14,9 @@ import 'core/themes/theme_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  // Load environment variables
   await dotenv.load(fileName: "api_key.env");
   String apiToken = dotenv.env['API_TOKEN'] ?? '';
 
-  // Initialize Supabase
   await Supabase.initialize(url: url, anonKey: apiToken);
 
   runApp(const MyApp());

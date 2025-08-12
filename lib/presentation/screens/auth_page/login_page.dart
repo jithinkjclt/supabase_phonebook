@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Changed background to white
+      backgroundColor: Colors.white,
       body: BlocProvider(
         create: (_) => AuthCubit(),
         child: BlocBuilder<AuthCubit, AuthState>(
