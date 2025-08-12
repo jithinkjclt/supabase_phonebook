@@ -8,7 +8,6 @@ import 'package:phone_book_app/data/constants/api.dart';
 import 'package:phone_book_app/presentation/screens/auth_page/login_page.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/contact_page.dart';
 
-
 import 'core/themes/AppThemes.dart';
 import 'core/themes/theme_cubit.dart';
 
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
             theme: AppThemes.lightTheme,
             darkTheme: AppThemes.darkTheme,
             themeMode: themeMode,
-            home: const ContactPage(),
+            home: const LoginPage(),
           );
         },
       ),

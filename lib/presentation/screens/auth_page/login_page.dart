@@ -58,19 +58,7 @@ class LoginPage extends StatelessWidget {
                           obscureText: true,
                           trailingIconColor: Colors.deepPurple,
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Forgot your Password?',
-                              style: TextStyle(
-                                color: Colors.deepPurple,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ),
+
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
