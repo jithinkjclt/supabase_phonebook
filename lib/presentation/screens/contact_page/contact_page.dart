@@ -73,7 +73,7 @@ class ContactPage extends StatelessWidget {
                     phoneController.text.isNotEmpty) {
                   if (isEditing) {
                     cubit.updateContact(
-                      contact.copyWith(
+                      contact!.copyWith(
                         name: nameController.text,
                         phone: phoneController.text,
                       ),
@@ -136,8 +136,8 @@ class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final screenWidth = context.deviceSize.width;
-    final screenHeight = context.deviceSize.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return BlocProvider(
       create: (context) => ContactListCubit(),
@@ -147,44 +147,69 @@ class ContactPage extends StatelessWidget {
           final showFavoritesOnly = (state is ContactListSuccess)
               ? state.showFavoritesOnly
               : false;
+          final showRecentlyAddedOnly = (state is ContactListSuccess)
+              ? state.showRecentlyAddedOnly
+              : false;
+          final isAllContacts = !showFavoritesOnly && !showRecentlyAddedOnly;
 
-          final toggleButtons = Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  if (showFavoritesOnly) {
-                    cubit.toggleFavoritesFilter();
-                  }
-                },
-                child: Text(
-                  'All Contacts',
-                  style: TextStyle(
-                    color: !showFavoritesOnly ? Colors.blue : Colors.grey,
-                    fontWeight: !showFavoritesOnly
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+          // Updated logic to fix UI overflow
+          final toggleButtons = SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    if (!isAllContacts) {
+                      cubit.toggleAllContactsFilter();
+                    }
+                  },
+                  child: Text(
+                    'All Contacts',
+                    style: TextStyle(
+                      color: isAllContacts ? Colors.blue : Colors.grey,
+                      fontWeight: isAllContacts
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: screenWidth * 0.04),
-              TextButton(
-                onPressed: () {
-                  if (!showFavoritesOnly) {
-                    cubit.toggleFavoritesFilter();
-                  }
-                },
-                child: Text(
-                  'Favorites',
-                  style: TextStyle(
-                    color: showFavoritesOnly ? Colors.blue : Colors.grey,
-                    fontWeight: showFavoritesOnly
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+                SizedBox(width: screenWidth * 0.04),
+                TextButton(
+                  onPressed: () {
+                    if (!showFavoritesOnly) {
+                      cubit.toggleFavoritesFilter();
+                    }
+                  },
+                  child: Text(
+                    'Favorites',
+                    style: TextStyle(
+                      color: showFavoritesOnly ? Colors.blue : Colors.grey,
+                      fontWeight: showFavoritesOnly
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(width: screenWidth * 0.04),
+                TextButton(
+                  onPressed: () {
+                    if (!showRecentlyAddedOnly) {
+                      cubit.toggleRecentlyAddedFilter();
+                    }
+                  },
+                  child: Text(
+                    'Recently Added',
+                    style: TextStyle(
+                      color: showRecentlyAddedOnly ? Colors.blue : Colors.grey,
+                      fontWeight: showRecentlyAddedOnly
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
 
           return Scaffold(
@@ -244,9 +269,9 @@ class ContactPage extends StatelessWidget {
                         ),
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
+                              context,
+                              index,
+                              ) {
                             final contact = contacts[index];
                             return Padding(
                               padding: EdgeInsets.only(
@@ -306,12 +331,12 @@ class ContactPage extends StatelessWidget {
   }
 
   Widget _buildSliverAppBar(
-    BuildContext context,
-    bool isDark,
-    ContactListCubit cubit,
-    Row toggleButtons,
-    double screenHeight,
-  ) {
+      BuildContext context,
+      bool isDark,
+      ContactListCubit cubit,
+      Widget toggleButtons,
+      double screenHeight,
+      ) {
     return SliverAppBar(
       backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
       expandedHeight: screenHeight * 0.18,

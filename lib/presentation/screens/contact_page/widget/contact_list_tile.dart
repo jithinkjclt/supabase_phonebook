@@ -13,7 +13,7 @@ class ContactTile extends StatelessWidget {
   final Function(Contact)? onDelete;
 
   const ContactTile({
-    Key? key,
+    super.key,
     required this.contact,
     required this.isDark,
     required this.screenWidth,
@@ -22,7 +22,7 @@ class ContactTile extends StatelessWidget {
     this.onFavoriteToggle,
     this.onEdit,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

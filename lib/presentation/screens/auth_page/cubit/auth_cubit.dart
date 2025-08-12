@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../data/token.dart';
+import '../../../../data/constants/token.dart';
 
 part 'auth_state.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:phone_book_app/data/token.dart';
+import 'package:phone_book_app/data/constants/token.dart';
 import 'package:phone_book_app/presentation/screens/auth_page/login_page.dart';
 import 'package:phone_book_app/presentation/screens/contact_page/contact_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

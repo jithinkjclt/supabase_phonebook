@@ -14,7 +14,7 @@ class ContactListCubit extends Cubit<ContactListState> {
   final _supabaseClient = Supabase.instance.client;
   List<Contact> _originalContacts = [];
   bool _showFavoritesOnly = false;
-
+  bool _showRecentlyAddedOnly = false;
 
   Future<void> fetchContacts() async {
     emit(ContactListLoading());
@@ -22,7 +22,7 @@ class ContactListCubit extends Cubit<ContactListState> {
       final response = await _supabaseClient
           .from('contacts')
           .select()
-          .order('created_at', ascending: false);
+          .order('name', ascending: true);
 
       _originalContacts = (response as List)
           .map((e) => Contact.fromJson(e))
@@ -38,21 +38,45 @@ class ContactListCubit extends Cubit<ContactListState> {
   }
 
   void toggleFavoritesFilter() {
-    _showFavoritesOnly = !_showFavoritesOnly;
+    _showFavoritesOnly = true;
+    _showRecentlyAddedOnly = false;
+    _applyFilter();
+  }
+
+  void toggleRecentlyAddedFilter() {
+    _showRecentlyAddedOnly = true;
+    _showFavoritesOnly = false;
+    _applyFilter();
+  }
+
+  void toggleAllContactsFilter() {
+    _showFavoritesOnly = false;
+    _showRecentlyAddedOnly = false;
     _applyFilter();
   }
 
   void _applyFilter() {
-    List<Contact> filteredList = _originalContacts;
+    List<Contact> filteredList = List.from(_originalContacts);
+
     if (_showFavoritesOnly) {
-      filteredList = _originalContacts
-          .where((contact) => contact.isFavorite)
-          .toList();
+      filteredList = filteredList.where((contact) => contact.isFavorite).toList();
+      // Keep favorites sorted alphabetically
+      filteredList.sort((a, b) => a.name.compareTo(b.name));
+    } else if (_showRecentlyAddedOnly) {
+      final now = DateTime.now();
+      filteredList = filteredList.where((contact) => now.difference(contact.createdAt).inHours < 24).toList();
+      // Change here: Sort recently added contacts by creation time, descending
+      filteredList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    } else {
+      // Default sort for "All Contacts" view is alphabetical
+      filteredList.sort((a, b) => a.name.compareTo(b.name));
     }
+
     emit(
       ContactListSuccess(
         contacts: filteredList,
         showFavoritesOnly: _showFavoritesOnly,
+        showRecentlyAddedOnly: _showRecentlyAddedOnly,
       ),
     );
   }
@@ -83,6 +107,7 @@ class ContactListCubit extends Cubit<ContactListState> {
         ContactListSuccess(
           contacts: updatedContacts,
           showFavoritesOnly: _showFavoritesOnly,
+          showRecentlyAddedOnly: _showRecentlyAddedOnly,
         ),
       );
     }
@@ -91,14 +116,14 @@ class ContactListCubit extends Cubit<ContactListState> {
       await _supabaseClient
           .from('contacts')
           .update({
-            'name': contact.name,
-            'phone': contact.phone,
-            'is_favorite': contact.isFavorite,
-          })
+        'name': contact.name,
+        'phone': contact.phone,
+        'is_favorite': contact.isFavorite,
+      })
           .eq('id', contact.id);
 
       final originalIndex = _originalContacts.indexWhere(
-        (c) => c.id == contact.id,
+            (c) => c.id == contact.id,
       );
       if (originalIndex != -1) {
         _originalContacts[originalIndex] = contact;
@@ -125,6 +150,7 @@ class ContactListCubit extends Cubit<ContactListState> {
       ContactListSuccess(
         contacts: updatedContacts,
         showFavoritesOnly: _showFavoritesOnly,
+        showRecentlyAddedOnly: _showRecentlyAddedOnly,
       ),
     );
 
@@ -143,15 +169,11 @@ class ContactListCubit extends Cubit<ContactListState> {
   }
 
   Future<void> searchContacts(String query) async {
-    _showFavoritesOnly = false; //
-
-    final currentState = state;
-    if (currentState is! ContactListSuccess) {
-      return;
-    }
+    _showFavoritesOnly = false;
+    _showRecentlyAddedOnly = false;
 
     if (query.isEmpty) {
-      emit(ContactListSuccess(contacts: _originalContacts));
+      _applyFilter();
       return;
     }
 
@@ -162,6 +184,12 @@ class ContactListCubit extends Cubit<ContactListState> {
       return nameMatches || numberMatches;
     }).toList();
 
-    emit(ContactListSuccess(contacts: filteredContacts));
+    emit(
+      ContactListSuccess(
+        contacts: filteredContacts,
+        showFavoritesOnly: _showFavoritesOnly,
+        showRecentlyAddedOnly: _showRecentlyAddedOnly,
+      ),
+    );
   }
 }
