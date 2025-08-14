@@ -20,8 +20,8 @@ The app allows users to **create**, **edit**, **delete**, **search**, and **favo
 
 - **Flutter** – Latest stable version
 - **Supabase** – Backend & Database
-- **State Management** – (e.g., Bloc / Riverpod / Provider – your choice)
-- **Dart** – Null safety enabled
+- **State Management** – Cubit
+- **Dart** 
 
 ---
 
