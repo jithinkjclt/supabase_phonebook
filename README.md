@@ -14,8 +14,6 @@ The app allows users to **create**, **edit**, **delete**, **search**, and **favo
 - 🔍 **Search Contacts** – Real-time search by name or phone number.
 - ⭐ **Favorite Contacts** – Mark/unmark contacts as favorite.
 - 🆕 **Recently Added** – Sort contacts by newest first.
-- ⚡ **Optimized Performance** – Snappy UI and minimal latency with Supabase.
-
 ---
 
 ## 🛠 Tech Stack
